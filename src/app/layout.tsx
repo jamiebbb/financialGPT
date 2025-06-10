@@ -6,8 +6,8 @@ import { Toaster } from 'sonner'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'PHILO RAG - Agentic Document Intelligence',
-  description: 'Advanced RAG system with document management and intelligent querying',
+  title: 'FinancialGPT - AI-Powered Financial Document Analysis',
+  description: 'Professional financial analysis platform with specialized AI analysts, bulk document processing, and Companies House integration',
 }
 
 export default function RootLayout({

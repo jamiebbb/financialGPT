@@ -32,7 +32,41 @@ export function ChatInterface() {
   const [expandedFeedback, setExpandedFeedback] = useState<string | null>(null)
   const [expandedSources, setExpandedSources] = useState<string | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [selectedAnalyst, setSelectedAnalyst] = useState('DCF Valuation Specialist')
   const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  const analysts = [
+    { 
+      name: 'DCF Valuation Specialist', 
+      icon: '💰', 
+      description: 'DCF modeling, cash flow analysis, discount rates, terminal values',
+      color: 'bg-green-100 text-green-800 border-green-200'
+    },
+    { 
+      name: 'Debt & Credit Analyst', 
+      icon: '💳', 
+      description: 'Credit risk, debt capacity, covenant compliance, leverage ratios',
+      color: 'bg-red-100 text-red-800 border-red-200'
+    },
+    { 
+      name: 'Operational Performance Analyst', 
+      icon: '⚙️', 
+      description: 'Efficiency ratios, margin analysis, operational metrics',
+      color: 'bg-blue-100 text-blue-800 border-blue-200'
+    },
+    { 
+      name: 'Financial Ratio Analyst', 
+      icon: '📊', 
+      description: 'Liquidity, profitability, efficiency, leverage analysis',
+      color: 'bg-purple-100 text-purple-800 border-purple-200'
+    },
+    { 
+      name: 'Risk Assessment Specialist', 
+      icon: '⚠️', 
+      description: 'Risk factors, stress testing, scenario analysis',
+      color: 'bg-orange-100 text-orange-800 border-orange-200'
+    },
+  ]
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -110,7 +144,8 @@ export function ChatInterface() {
         body: JSON.stringify({ 
           message: input.trim(),
           chatId: currentSessionId,
-          chatHistory: messages // Send conversation history for context
+          chatHistory: messages, // Send conversation history for context
+          analyst: selectedAnalyst // Include selected financial analyst
         }),
       })
 
@@ -186,10 +221,10 @@ export function ChatInterface() {
               <div>
                 <h2 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
                   <Bot className="w-5 h-5 text-blue-500" />
-                  PHILO RAG Assistant
+                  FinancialGPT Analysis
                 </h2>
                 <p className="text-sm text-gray-600 mt-1">
-                  Ask questions about your uploaded documents • {sessions.length} chat{sessions.length !== 1 ? 's' : ''} saved
+                  Financial analysis with specialized AI analysts • {sessions.length} chat{sessions.length !== 1 ? 's' : ''} saved
                 </p>
               </div>
             </div>
@@ -201,6 +236,39 @@ export function ChatInterface() {
               >
                 New Chat
               </button>
+            </div>
+          </div>
+          
+          {/* Analyst Selection */}
+          <div className="mt-4 pt-4 border-t border-gray-100">
+            <div className="mb-3">
+              <label className="text-sm font-medium text-gray-700 mb-2 block">
+                🤖 Choose Your Financial Analyst:
+              </label>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
+              {analysts.map((analyst) => (
+                <button
+                  key={analyst.name}
+                  onClick={() => setSelectedAnalyst(analyst.name)}
+                  className={`p-3 rounded-lg border-2 text-left transition-all hover:shadow-md ${
+                    selectedAnalyst === analyst.name
+                      ? `${analyst.color} border-opacity-100 shadow-md`
+                      : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'
+                  }`}
+                >
+                  <div className="flex items-center mb-1">
+                    <span className="text-lg mr-2">{analyst.icon}</span>
+                    <div className="text-xs font-medium">{analyst.name.split(' ')[0]}</div>
+                  </div>
+                  <div className="text-xs opacity-75 line-clamp-2">
+                    {analyst.description}
+                  </div>
+                </button>
+              ))}
+            </div>
+            <div className="mt-2 text-xs text-gray-500">
+              Current specialist: <span className="font-medium">{selectedAnalyst}</span>
             </div>
           </div>
         </div>
